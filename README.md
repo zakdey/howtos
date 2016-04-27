@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ZendSkeletonApplication
 =======================
 
@@ -116,3 +117,7 @@ it should look something like below:
     }
 
 Restart the nginx, now you should be ready to go!
+=======
+# howtos
+Tool for cookbooks - ZF2
+>>>>>>> ceeeb60b6c90495e922e79de7b053d661612467e
