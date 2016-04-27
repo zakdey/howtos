@@ -52,15 +52,31 @@ return array(
                     ),
                 ),
             ),
-        ),
-    ),
-    'service_manager' => array(
-        'abstract_factories' => array(
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
-        ),
-        'factories' => array(
-            'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
+            'recepies' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/recepies',
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\Index',
+                        'action'        => 'recepies',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                                    'default' => array(
+                                        'type'    => 'Segment',
+                                        'options' => array(
+                                            'route'    => '/:id',
+                                            'constraints' => array(
+                                                'id' => '[0-9]*',
+                                            ),
+                                            'defaults' => array(
+                                                'action' => 'single',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+            ),
         ),
     ),
     'translator' => array(
@@ -74,8 +90,15 @@ return array(
         ),
     ),
     'controllers' => array(
-        'invokables' => array(
-            'Application\Controller\Index' => Controller\IndexController::class
+        'factories' => array(
+            'Application\Controller\Index' => Controller\IndexControllerFactory::class,
+            //'Prodotti\Controller\Admin' => Controller\AdminControllerFactory::class,
+        ),
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Application\Service\RecepyService' => Service\RecepyServiceFactory::class,
+          //  'Prodotti\Form\ProdottoForm' => Form\ProdottoFormFactory::class,
         ),
     ),
     'view_manager' => array(
@@ -94,6 +117,33 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+    'doctrine'        => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => [__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity']
+            ],
+            'orm_default'             => [
+                'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+                'drivers' => [
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                ]
+            ],
+        ],
+    ],
+
+    // ACL
+    'bjyauthorize' => [
+        'guards' => [
+            'BjyAuthorize\Guard\Controller' => [
+
+                ['controller' => 'Application\Controller\Index', 'roles' => []],
+                //['controller' => 'Prodotti\Controller\Admin', 'roles' => []],
+
+            ],
+        ],
+    ],
     // Placeholder for console routes
     'console' => array(
         'router' => array(
