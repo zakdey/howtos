@@ -11,7 +11,9 @@ class RecepyServiceFactory implements FactoryInterface
 
         $entityManager = $serviceLocator->get('doctrine.entitymanager.orm_default');
 
-        return new RecepyService($entityManager);
+        $auth = $serviceLocator->get('zfcuser_auth_service');
+
+        return new RecepyService($entityManager, $auth);
 
     }
 

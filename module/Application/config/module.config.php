@@ -77,6 +77,49 @@ return array(
                                     ),
                                 ),
             ),
+            'backoffice' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/backoffice',
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\Backoffice',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                                    'create_recepy' => array(
+                                        'type'    => 'Literal',
+                                        'options' => array(
+                                            'route'    => '/new-recepy',
+                                            'defaults' => array(
+                                                'action' => 'create',
+                                            ),
+                                        ),
+                                    ),
+                                    'update_recepy' => array(
+                                        'type'    => 'Literal',
+                                        'options' => array(
+                                            'route'    => '/edit-recepy',
+                                        ),
+                                        'may_terminate' => true,
+                                        'child_routes' => array(
+                                                            'default' => array(
+                                                                'type'    => 'Segment',
+                                                                'options' => array(
+                                                                    'route'    => '/:id',
+                                                                    'constraints' => array(
+                                                                        'id' => '[0-9]*',
+                                                                    ),
+                                                                    'defaults' => array(
+                                                                        'action' => 'update',
+                                                                    ),
+                                                                ),
+                                                            ),
+                                                        ),
+                                    ),
+                                ),
+            ),
         ),
     ),
     'translator' => array(
@@ -92,13 +135,14 @@ return array(
     'controllers' => array(
         'factories' => array(
             'Application\Controller\Index' => Controller\IndexControllerFactory::class,
+            'Application\Controller\Backoffice' => Controller\BackofficeControllerFactory::class,
             //'Prodotti\Controller\Admin' => Controller\AdminControllerFactory::class,
         ),
     ),
     'service_manager' => array(
         'factories' => array(
             'Application\Service\RecepyService' => Service\RecepyServiceFactory::class,
-          //  'Prodotti\Form\ProdottoForm' => Form\ProdottoFormFactory::class,
+            'Application\Form\RecepyForm' => Form\RecepyFormFactory::class,
         ),
     ),
     'view_manager' => array(
@@ -137,9 +181,10 @@ return array(
     'bjyauthorize' => [
         'guards' => [
             'BjyAuthorize\Guard\Controller' => [
-
+                ['controller' => 'zfcuser', 'roles' => []],
                 ['controller' => 'Application\Controller\Index', 'roles' => []],
-                //['controller' => 'Prodotti\Controller\Admin', 'roles' => []],
+                ['controller' => 'Application\Controller\Backoffice', 'roles' => ['user', 'admin']],
+                ['controller' => '\Controller\AdminController', 'roles' => ['admin']],
 
             ],
         ],

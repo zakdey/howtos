@@ -37,14 +37,14 @@ class Recepy
     private $content;
 
     /**
-     * @var \Application\Entity\Author
+     * @var \Application\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Entity\Author")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
-    private $author;
+    private $user;
 
 
     /**
@@ -62,10 +62,12 @@ class Recepy
     private $dislikes;
 
 
-    public function __construct($title, $content, $author) {
+    public function __construct($title, $content, $user) {
         $this->title = $title;
         $this->content = $content;
-        $this->author = $author;
+        $this->user = $user;
+        $this->likes = 0;
+        $this->dislikes = 0;
     }
 
     /**
@@ -128,13 +130,13 @@ class Recepy
 
 
     /**
-     * Get author
+     * Get user
      *
-     * @return Author
+     * @return User
      */
-    public function getAuthor()
+    public function getUser()
     {
-        return $this->author;
+        return $this->user;
     }
 
     /**

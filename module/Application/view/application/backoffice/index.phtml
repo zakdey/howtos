@@ -1,22 +1,25 @@
-<h1>Welcome to Howtos.com</h1>
+<h1>Backoffice</h1>
+<a class="btn btn-primary" href="<?=$this->url('backoffice/create_recepy')?>" role="button">nuovo prodotto</a>
 
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>#</th>
             <th>Titolo</th>
             <th><i class="glyphicon glyphicon-thumbs-up"></i></th>
             <th><i class="glyphicon glyphicon-thumbs-down"></i></th>
-            <th width="5%"></th>
+            <th width="10%"></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach($this->list as $recepy) { ?>
         <tr>
-            <td><strong><a href="<?=$this->url('recepies')?>/<?=$recepy->getId()?>"><?=$recepy->getTitle()?></a></strong></td>
+            <td scope="row"><?=$recepy->getId()?></td>
+            <td><strong><a href="<?=$this->url('backoffice/update_recepy')?>/<?=$recepy->getId()?>"><?=$recepy->getTitle()?></a></strong></td>
             <td><?=$recepy->getLikes()?></td>
             <td><?=$recepy->getDislikes()?></td>
             <td>
-                <a class="btn btn-default" href="#" role="button">leggi</a>
+                <a class="btn btn-default" href="#" role="button">Modifica</a>
             </td>
         </tr>
         <?php } ?>

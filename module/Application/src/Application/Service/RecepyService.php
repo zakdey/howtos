@@ -7,52 +7,52 @@ class RecepyService {
 
     private $entityManager;
     private $recepyRepository;
+    private $userRepository;
   //  private $categorieRepository;
 
-    public function __construct($entityManager) {
+    public function __construct($entityManager, $auth) {
         $this->entityManager = $entityManager;
         $this->recepyRepository = $entityManager->getRepository('Application\Entity\Recepy');
+        $this->auth = $auth;
         //$this->categorieRepository = $entityManager->getRepository('Prodotti\Entity\Categoria');
     }
 
-    /*public function getProdotto($codice) {
-        return $this->prodottiRepository->findOneByCodice($codice);
+    public function getRecepy($id) {
+        return $this->recepyRepository->findOneById($id);
     }
 
-    public function getListaProdotti() {
-        return $this->prodottiRepository->findAll();
+    public function getRecepyList() {
+        return $this->recepyRepository->findAll();
     }
 
-    public function getListaCategorie() {
-        return $this->categorieRepository->findAll();
+    public function getUserRecepyList() {
+        return $this->recepyRepository->findByUser($this->auth->getIdentity()->getId());
     }
 
-    public function getArrayCategorie() {
+    /*public function getArrayCategorie() {
         $categorie = [];
         foreach($this->getListaCategorie() as $categoria) {
             $categorie[$categoria->getId()] = $categoria->getNome();
         }
 
         return $categorie;
-    }
+    }*/
 
-    public function creaNuovoProdotto(array $dati) {
-        $prodotto = new Prodotto(
-            $dati['codice'],
-            $dati['nome'],
-            $dati['descrizione'],
-            $dati['ingredienti'],
-            $dati['prezzo'],
-            $this->entityManager->getReference('\Prodotti\Entity\Categoria', $dati['categoria'])
+    public function createNewRecepy(array $data) {
+        $recepy = new Recepy(
+            $data['title'],
+            $data['content'],
+            $this->auth->getIdentity()/*,
+            $this->entityManager->getReference('\Prodotti\Entity\Categoria', $dati['categoria'])*/
         );
 
-        $this->entityManager->persist($prodotto);
+        $this->entityManager->persist($recepy);
         $this->entityManager->flush();
 
-        return $prodotto;
+        return $recepy;
     }
 
-    public function elimina(Prodotto $prodotto) {
+    /*public function elimina(Prodotto $prodotto) {
         $this->entityManager->remove($prodotto);
         $this->entityManager->flush();
     }*/

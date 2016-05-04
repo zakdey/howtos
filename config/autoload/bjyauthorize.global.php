@@ -37,6 +37,7 @@ return [
              */
             \BjyAuthorize\Provider\Role\Config::class => [
                 'guest' => [],
+                'user'  => [],
                 'admin'  => [],
             ],
 

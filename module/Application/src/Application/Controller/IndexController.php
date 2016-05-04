@@ -11,12 +11,21 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Service\RecepyService;
 
 class IndexController extends AbstractActionController
 {
+    private $recepyService;
+
+    public function __construct(RecepyService $recepyService) {
+        $this->recepyService = $recepyService;
+    }
+
     public function indexAction()
     {
-        return new ViewModel();
+      return new ViewModel([
+          'list' => $this->recepyService->getRecepyList()
+      ]);
     }
     public function recepiesAction()
     {
