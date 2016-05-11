@@ -168,11 +168,11 @@ class Recepy
      *
      * @param integer $dislikes
      *
-     * @return Disikes
+     * @return Dislikes
      */
     public function setDislikes($dislikes)
     {
-        $this->deslikes = $dislikes;
+        $this->dislikes = $dislikes;
 
         return $this;
     }
@@ -185,6 +185,16 @@ class Recepy
     public function getDislikes()
     {
         return $this->dislikes;
+    }
+
+    public function toArray() {
+      return [
+        "title" => $this->title,
+        "content" => $this->content,
+        "username" => $this->user->getUsername(),
+        "likes" => $this->likes,
+        "dislikes" => $this->dislikes,
+      ];
     }
 
 }

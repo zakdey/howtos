@@ -74,6 +74,25 @@ class BackofficeController extends AbstractActionController
     }
     public function updateAction()
     {
-        return new ViewModel();
+      $id = $this->params()->fromRoute('id');
+      if ($this->getRequest()->isPost()) {
+          $request = $this->getRequest();
+
+          // merge dati che arrivano dalla form
+          $postData = array_merge_recursive(
+              $request->getPost()->toArray()
+          );
+
+          $this->recepyForm->setData($postData);
+
+          if ($this->recepyForm->isValid()) {
+              $recepy = $this->recepyService->updateRecepy($id, $postData);
+              $this->redirect()->toRoute('backoffice');
+          }
+      }
+      $recepy = $this->recepyService->getRecepy($id);
+      return new ViewModel([
+          'form' => $this->recepyForm->setData(["title"=>$recepy->getTitle(), "content"=>$recepy->getContent()])
+      ]);
     }
 }

@@ -16,7 +16,7 @@
             <td><?=$recepy->getLikes()?></td>
             <td><?=$recepy->getDislikes()?></td>
             <td>
-                <a class="btn btn-default" href="#" role="button">leggi</a>
+                <a class="btn btn-default" href="<?=$this->url('recepies')?>/<?=$recepy->getId()?>" role="button">leggi</a>
             </td>
         </tr>
         <?php } ?>

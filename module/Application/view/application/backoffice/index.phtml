@@ -1,5 +1,6 @@
 <h1>Backoffice</h1>
-<a class="btn btn-primary" href="<?=$this->url('backoffice/create_recepy')?>" role="button">nuovo prodotto</a>
+
+<a class="btn btn-primary pull-right" href="<?=$this->url('backoffice/create_recepy')?>" role="button">nuovo prodotto</a>
 
 <table class="table table-striped">
     <thead>
@@ -19,7 +20,7 @@
             <td><?=$recepy->getLikes()?></td>
             <td><?=$recepy->getDislikes()?></td>
             <td>
-                <a class="btn btn-default" href="#" role="button">Modifica</a>
+                <a class="btn btn-default" href="<?=$this->url('backoffice/update_recepy')?>/<?=$recepy->getId()?>" role="button">Modifica</a>
             </td>
         </tr>
         <?php } ?>

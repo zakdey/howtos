@@ -1,1 +1,45 @@
-<h1>Single recepy</h1>
+<div class="row">
+  <div class="col-md-8">
+    <h1><?=$this->recepy->getTitle() ?></h1>
+    <p><strong>by: <?=$this->recepy->getUser()->getUsername() ?></strong></p>
+  </div>
+  <div class="col-md-4">
+    <br>
+    <div class="pull-right">
+      <a href="#" class="btn btn-success js-vote" data-vote="like"><i class="glyphicon glyphicon-thumbs-up"> <span class="badge js-likes"><?=$this->recepy->getLikes() ?></span></i></a>
+      <a href="#" class="btn btn-danger js-vote"  data-vote="dislike"><i class="glyphicon glyphicon-thumbs-down"> <span class="badge js-dislikes"><?=$this->recepy->getDislikes() ?></span></i></a>
+    </div>
+  </div>
+</div>
+<p><?php echo $this->recepy->getContent() ?></p>
+
+<script>
+
+  $( document ).ready(function() {
+      $('.js-vote').on('click', function() {
+        if(Cookies.get("vote-<?=$this->recepy->getId()?>") != 1){
+          var vote = $(this).data('vote');
+
+          var spanLikes = $(this).find('.js-likes');
+          var spanDislikes = $(this).find('.js-dislikes');
+
+          Cookies.set("vote-<?=$this->recepy->getId()?>", 1);
+
+          $.post("/vote/<?=$this->recepy->getId()?>", {vote: vote}, function(data) {
+
+              var likes = data.recepy.likes;
+              var dislikes = data.recepy.dislikes;
+
+              spanLikes.html(likes);
+              spanDislikes.html(dislikes);
+          });
+
+        } else {
+          alert('Hai già votato "<?=$this->recepy->getTitle() ?>"!');
+        }
+
+
+      });
+  });
+
+</script>

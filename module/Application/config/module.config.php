@@ -77,6 +77,30 @@ return array(
                                     ),
                                 ),
             ),
+            'vote' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/vote',
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\Index',
+                    ),
+                ),
+                'may_terminate' => false,
+                'child_routes' => array(
+                                    'default' => array(
+                                        'type'    => 'Segment',
+                                        'options' => array(
+                                            'route'    => '/:id',
+                                            'constraints' => array(
+                                                'id' => '[0-9]*',
+                                            ),
+                                            'defaults' => array(
+                                                'action' => 'vote',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+            ),
             'backoffice' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -160,6 +184,9 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
+        'strategies' => array(
+          'ViewJsonStrategy',
+        ),
     ),
     'doctrine'        => [
         'driver' => [
@@ -185,7 +212,6 @@ return array(
                 ['controller' => 'Application\Controller\Index', 'roles' => []],
                 ['controller' => 'Application\Controller\Backoffice', 'roles' => ['user', 'admin']],
                 ['controller' => '\Controller\AdminController', 'roles' => ['admin']],
-
             ],
         ],
     ],

@@ -52,6 +52,44 @@ class RecepyService {
         return $recepy;
     }
 
+    public function updateRecepy($id, array $data) {
+        $recepy = $this->recepyRepository->findOneById($id);
+        $recepy->setTitle($data['title']);
+        $recepy->setContent($data['content']);
+        $this->entityManager->persist($recepy);
+        $this->entityManager->flush();
+
+        return $recepy;
+    }
+
+    public function voteRecepy($id, $vote) {
+
+        $recepy = $this->recepyRepository->findOneById($id);
+
+        switch ($vote){
+        case "like":
+          $likes = $recepy->getLikes();
+          $likes++;
+          $recepy->setLikes($likes);
+          break;
+
+        case "dislike":
+          $dislikes = $recepy->getDislikes();
+          $dislikes++;
+          $recepy->setDislikes($dislikes);
+          break;
+
+        default:
+          return false;
+          break;
+        }
+
+        $this->entityManager->persist($recepy);
+        $this->entityManager->flush();
+
+        return $recepy;
+    }
+
     /*public function elimina(Prodotto $prodotto) {
         $this->entityManager->remove($prodotto);
         $this->entityManager->flush();

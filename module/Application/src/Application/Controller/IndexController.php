@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use Application\Service\RecepyService;
 
 class IndexController extends AbstractActionController
@@ -33,6 +34,21 @@ class IndexController extends AbstractActionController
     }
     public function singleAction()
     {
-        return new ViewModel();
+        $recepy = $this->recepyService->getRecepy($this->params()->fromRoute('id'));
+        return new ViewModel([
+            'recepy' => $recepy
+        ]);
     }
+    public function voteAction()
+    {
+        $vote = $this->params()->fromPost('vote');
+        $updatedRecepy = $this->recepyService->voteRecepy($this->params()->fromRoute('id'), $vote );
+
+        return new JsonModel(
+          [
+            'recepy' => $updatedRecepy->toArray()
+          ]
+        );
+    }
+
 }
